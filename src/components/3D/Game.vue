@@ -16,8 +16,6 @@ onMounted(() => {
   camera.position.set(0, 0, 500)
   camera.lookAt(0, 0, 0)
 
-  console.log(camera.getFilmWidth())
-
   const renderer = new THREE.WebGLRenderer()
   renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
   game.value.appendChild(renderer.domElement)
