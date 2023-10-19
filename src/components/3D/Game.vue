@@ -5,6 +5,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import * as THREE from 'three'
+import { KEYBOARD_KEY, PLAYER } from '../../utils/constant'
 
 let game = ref(null)
 
@@ -21,10 +22,11 @@ onMounted(() => {
   const geometry = new THREE.BoxGeometry(1, 1, 1)
   const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
   const cube = new THREE.Mesh(geometry, material)
-  cube.name = 'player'
-  cube.position.set(0, -camera.getFilmHeight() / 4, 490)
+  cube.name = PLAYER.NAME
+  cube.position.set(0, -camera.getFilmHeight() / 2, 480)
   scene.add(cube)
   drawLines(scene, camera)
+  drawLines2(scene, camera)
 
   function animate() {
     requestAnimationFrame(animate)
@@ -37,36 +39,52 @@ onMounted(() => {
 
     const points = []
     points.push(new THREE.Vector3(camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 500))
-    points.push(new THREE.Vector3(30, -camera.getFilmHeight() / 2, 0))
-    points.push(new THREE.Vector3(-30, -camera.getFilmHeight() / 2, 0))
+    points.push(new THREE.Vector3(camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 0))
+    points.push(new THREE.Vector3(-camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 0))
     points.push(new THREE.Vector3(-camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 500))
+    console.log(camera.fov)
+    const geometry = new THREE.BufferGeometry().setFromPoints(points)
+    const line = new THREE.Line(geometry, material)
+    scene.add(line)
+  }
+
+  function drawLines2(scene, camera) {
+    const material = new THREE.LineBasicMaterial({ color: 0xff0000 })
+
+    const points = []
+    points.push(new THREE.Vector3(-camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 480))
+    points.push(new THREE.Vector3(camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 480))
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points)
     const line = new THREE.Line(geometry, material)
     scene.add(line)
   }
 
-  function setupKeyControls(scene) {
-    var cube = scene.getObjectByName('player')
+  function setupKeyControls(scene, camera) {
+    var cube = scene.getObjectByName(PLAYER.NAME)
     document.onkeydown = function (e) {
       switch (e.keyCode) {
-        case 37:
-          cube.position.x -= 0.1
+        case KEYBOARD_KEY.LEFT:
+          if (cube.position.x > -camera.getFilmWidth() / 2) {
+            cube.position.x -= PLAYER.SPEED
+          }
           break
-        case 38:
-          cube.position.z -= 0.1
+        case KEYBOARD_KEY.UP:
+          cube.position.z -= PLAYER.SPEED
           break
-        case 39:
-          cube.position.x += 0.1
+        case KEYBOARD_KEY.RIGHT:
+          if (cube.position.x < camera.getFilmWidth() / 2) {
+            cube.position.x += PLAYER.SPEED
+          }
           break
-        case 40:
-          cube.position.z += 0.1
+        case KEYBOARD_KEY.DOWN:
+          cube.position.z += PLAYER.SPEED
           break
       }
     }
   }
 
-  setupKeyControls(scene)
+  setupKeyControls(scene, camera)
   animate()
 })
 </script>
