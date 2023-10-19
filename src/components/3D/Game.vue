@@ -19,11 +19,11 @@ onMounted(() => {
   renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
   game.value.appendChild(renderer.domElement)
 
-  const geometry = new THREE.BoxGeometry(1, 1, 1)
+  const geometry = new THREE.BoxGeometry(PLAYER.SIZE, PLAYER.SIZE, PLAYER.SIZE)
   const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
   const cube = new THREE.Mesh(geometry, material)
   cube.name = PLAYER.NAME
-  cube.position.set(0, -camera.getFilmHeight() / 2, 480)
+  cube.position.set(0, -camera.getFilmHeight() / 2 + PLAYER.SIZE / 2, 480)
   scene.add(cube)
   drawLines(scene, camera)
   drawLines2(scene, camera)
@@ -52,8 +52,20 @@ onMounted(() => {
     const material = new THREE.LineBasicMaterial({ color: 0xff0000 })
 
     const points = []
-    points.push(new THREE.Vector3(-camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 480))
-    points.push(new THREE.Vector3(camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 480))
+    points.push(
+      new THREE.Vector3(
+        -camera.getFilmWidth() / 2,
+        -camera.getFilmHeight() / 2 + PLAYER.SIZE / 2,
+        480
+      )
+    )
+    points.push(
+      new THREE.Vector3(
+        camera.getFilmWidth() / 2,
+        -camera.getFilmHeight() / 2 + PLAYER.SIZE / 2,
+        480
+      )
+    )
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points)
     const line = new THREE.Line(geometry, material)
@@ -65,7 +77,7 @@ onMounted(() => {
     document.onkeydown = function (e) {
       switch (e.keyCode) {
         case KEYBOARD_KEY.LEFT:
-          if (cube.position.x > -camera.getFilmWidth() / 2) {
+          if (cube.position.x > -camera.getFilmWidth() / 2 + PLAYER.SIZE / 2) {
             cube.position.x -= PLAYER.SPEED
           }
           break
@@ -73,7 +85,7 @@ onMounted(() => {
           cube.position.z -= PLAYER.SPEED
           break
         case KEYBOARD_KEY.RIGHT:
-          if (cube.position.x < camera.getFilmWidth() / 2) {
+          if (cube.position.x < camera.getFilmWidth() / 2 - PLAYER.SIZE / 2) {
             cube.position.x += PLAYER.SPEED
           }
           break
