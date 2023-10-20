@@ -30,9 +30,32 @@ onMounted(() => {
 
   const clock = new THREE.Clock()
 
+  let direction = null
+  function movement() {
+    const cube = scene.getObjectByName(PLAYER.NAME)
+    switch (direction) {
+      case KEYBOARD_KEY.LEFT:
+        if (cube.position.x > -camera.getFilmWidth() / 2 + PLAYER.SIZE / 2) {
+          cube.position.x -= PLAYER.SPEED
+        }
+        break
+      case KEYBOARD_KEY.UP:
+        cube.position.z -= PLAYER.SPEED
+        break
+      case KEYBOARD_KEY.RIGHT:
+        if (cube.position.x < camera.getFilmWidth() / 2 - PLAYER.SIZE / 2) {
+          cube.position.x += PLAYER.SPEED
+        }
+        break
+      case KEYBOARD_KEY.DOWN:
+        cube.position.z += PLAYER.SPEED
+        break
+    }
+  }
+
   let velocity = 0
   function update(delta) {
-    console.log(delta)
+    movement()
   }
 
   function animate() {
@@ -79,31 +102,50 @@ onMounted(() => {
     scene.add(line)
   }
 
-  function setupKeyControls(scene, camera) {
-    var cube = scene.getObjectByName(PLAYER.NAME)
+  function setupKeyControls() {
     document.onkeydown = function (e) {
       switch (e.keyCode) {
         case KEYBOARD_KEY.LEFT:
-          if (cube.position.x > -camera.getFilmWidth() / 2 + PLAYER.SIZE / 2) {
-            cube.position.x -= PLAYER.SPEED
+          direction = KEYBOARD_KEY.LEFT
+          break
+        case KEYBOARD_KEY.UP:
+          direction = KEYBOARD_KEY.UP
+          break
+        case KEYBOARD_KEY.RIGHT:
+          direction = KEYBOARD_KEY.RIGHT
+          break
+        case KEYBOARD_KEY.DOWN:
+          direction = KEYBOARD_KEY.DOWN
+          break
+      }
+    }
+    document.onkeyup = function (e) {
+      switch (e.keyCode) {
+        case KEYBOARD_KEY.LEFT:
+          if (direction === KEYBOARD_KEY.LEFT) {
+            direction = null
           }
           break
         case KEYBOARD_KEY.UP:
-          cube.position.z -= PLAYER.SPEED
+          if (direction === KEYBOARD_KEY.UP) {
+            direction = null
+          }
           break
         case KEYBOARD_KEY.RIGHT:
-          if (cube.position.x < camera.getFilmWidth() / 2 - PLAYER.SIZE / 2) {
-            cube.position.x += PLAYER.SPEED
+          if (direction === KEYBOARD_KEY.RIGHT) {
+            direction = null
           }
           break
         case KEYBOARD_KEY.DOWN:
-          cube.position.z += PLAYER.SPEED
+          if (direction === KEYBOARD_KEY.DOWN) {
+            direction = null
+          }
           break
       }
     }
   }
 
-  setupKeyControls(scene, camera)
+  setupKeyControls()
   animate()
 })
 </script>
