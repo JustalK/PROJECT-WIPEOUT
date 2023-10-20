@@ -8,6 +8,6 @@ export const KEYBOARD_KEY = {
 export const PLAYER = {
   NAME: 'player',
   SIZE: 2,
-  ACCELERATION: 0,
-  SPEED: 0.1
+  ACCELERATION: 200,
+  IMPULSE: 0.9
 }

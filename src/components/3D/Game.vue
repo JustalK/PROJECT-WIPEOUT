@@ -30,32 +30,42 @@ onMounted(() => {
 
   const clock = new THREE.Clock()
 
+  let velocity = 0
   let direction = null
-  function movement() {
+  function movement(delta) {
     const cube = scene.getObjectByName(PLAYER.NAME)
+
+    let newVelocity = velocity
+    if (velocity == 0) {
+      newVelocity = PLAYER.IMPULSE
+    }
+    newVelocity += velocity * delta + PLAYER.ACCELERATION * Math.pow(delta, 2) * 0.5
+    velocity = newVelocity
+
     switch (direction) {
       case KEYBOARD_KEY.LEFT:
         if (cube.position.x > -camera.getFilmWidth() / 2 + PLAYER.SIZE / 2) {
-          cube.position.x -= PLAYER.SPEED
+          cube.position.x -= newVelocity
         }
         break
       case KEYBOARD_KEY.UP:
-        cube.position.z -= PLAYER.SPEED
+        cube.position.z -= newVelocity
         break
       case KEYBOARD_KEY.RIGHT:
         if (cube.position.x < camera.getFilmWidth() / 2 - PLAYER.SIZE / 2) {
-          cube.position.x += PLAYER.SPEED
+          cube.position.x += newVelocity
         }
         break
       case KEYBOARD_KEY.DOWN:
-        cube.position.z += PLAYER.SPEED
+        cube.position.z += newVelocity
         break
+      default:
+        velocity = 0
     }
   }
 
-  let velocity = 0
   function update(delta) {
-    movement()
+    movement(delta)
   }
 
   function animate() {
