@@ -7,7 +7,7 @@ export const KEYBOARD_KEY = {
 
 export const PLAYER = {
   NAME: 'player',
-  SIZE: 1,
+  SIZE: 2,
   ACCELERATION: 0,
   SPEED: 0.1
 }

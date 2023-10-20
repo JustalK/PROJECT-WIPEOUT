@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 import * as THREE from 'three'
 import { KEYBOARD_KEY, PLAYER } from '../../utils/constant'
 
@@ -28,9 +28,17 @@ onMounted(() => {
   drawLines(scene, camera)
   drawLines2(scene, camera)
 
-  function animate() {
-    requestAnimationFrame(animate)
+  const clock = new THREE.Clock()
 
+  let velocity = 0
+  function update(delta) {
+    console.log(delta)
+  }
+
+  function animate() {
+    const delta = clock.getDelta()
+    requestAnimationFrame(animate)
+    update(delta)
     renderer.render(scene, camera)
   }
 
@@ -42,7 +50,6 @@ onMounted(() => {
     points.push(new THREE.Vector3(camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 0))
     points.push(new THREE.Vector3(-camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 0))
     points.push(new THREE.Vector3(-camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 500))
-    console.log(camera.fov)
     const geometry = new THREE.BufferGeometry().setFromPoints(points)
     const line = new THREE.Line(geometry, material)
     scene.add(line)
