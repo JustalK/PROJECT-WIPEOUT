@@ -51,7 +51,7 @@ export default class Ennemy {
     return false
   }
 
-  tick(delta) {
+  tick(delta, isNewLevel) {
     this.ennemy.position.z += ENNEMY.SPEED * delta
 
     if (this.isPlayerKilled()) {
@@ -59,7 +59,12 @@ export default class Ennemy {
     }
 
     if (this.ennemy.position.z > CAMERA.POSITION_Z) {
-      this.reset()
+      if (isNewLevel) {
+        this.scene.remove(this.ennemy)
+        return 'DELETE'
+      } else {
+        this.reset()
+      }
     }
   }
 
