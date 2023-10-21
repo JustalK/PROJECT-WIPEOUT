@@ -27,7 +27,7 @@ export default class World {
 
   tick(numberEnnemies) {
     this.setPercentage()
-    if (this.clock.getElapsedTime() - this.startTime >= 2 * this.level) {
+    if (this.clock.getElapsedTime() - this.startTime >= GAME.LEVEL_SPEED * this.level) {
       this.isReadyNewLevel = true
       if (this.level && numberEnnemies === 0) {
         this.increaseLevel()
@@ -48,8 +48,9 @@ export default class World {
 
   setPercentage() {
     this.percentage.style.width = `${Math.min(
-      ((this.clock.getElapsedTime() - this.startTime) * 100) / (2 * this.level),
-      100
+      ((this.clock.getElapsedTime() - this.startTime) * HTML.MAX_WIDTH) /
+        (GAME.LEVEL_SPEED * this.level),
+      HTML.MAX_WIDTH
     )}%`
   }
 
@@ -61,6 +62,7 @@ export default class World {
     this.status = GAME.START
     this.level = 0
     this.startTime = this.clock.getElapsedTime()
+    this.isReadyNewLevel = false
   }
 
   attachTo(element) {

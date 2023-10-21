@@ -61,7 +61,7 @@ export default class Ennemy {
     if (this.ennemy.position.z > CAMERA.POSITION_Z) {
       if (isNewLevel) {
         this.scene.remove(this.ennemy)
-        return 'DELETE'
+        return GAME.DELETE_ENNEMY
       } else {
         this.reset()
       }

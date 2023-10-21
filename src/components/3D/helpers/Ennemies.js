@@ -44,9 +44,8 @@ export default class Ennemies {
     }
     for (const [index, e] of this.ennemies.entries()) {
       const rsl = e.tick(delta, this.world.getIsReadyNewLevel())
-      if (rsl === 'DELETE') {
+      if (rsl === GAME.DELETE_ENNEMY) {
         this.ennemies.splice(index, 1)
-        console.log(this.ennemies)
       }
       if (rsl === GAME.STOP) {
         this.world.stop()
