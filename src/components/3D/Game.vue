@@ -7,6 +7,7 @@ import { ref, onMounted, onUpdated } from 'vue'
 import * as THREE from 'three'
 import { KEYBOARD_KEY, PLAYER } from '../../utils/constant'
 import Lines from './helpers/lines'
+import Player from './helpers/player'
 
 let game = ref(null)
 
@@ -20,12 +21,8 @@ onMounted(() => {
   renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
   game.value.appendChild(renderer.domElement)
 
-  const geometry = new THREE.BoxGeometry(PLAYER.SIZE, PLAYER.SIZE, PLAYER.SIZE)
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-  const cube = new THREE.Mesh(geometry, material)
-  cube.name = PLAYER.NAME
-  cube.position.set(0, -camera.getFilmHeight() / 2 + PLAYER.SIZE / 2, 480)
-  scene.add(cube)
+  const player = new Player(scene, camera)
+  player.init()
 
   const clock = new THREE.Clock()
 
