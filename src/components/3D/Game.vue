@@ -6,6 +6,8 @@
 import { ref, onMounted, onUpdated } from 'vue'
 import * as THREE from 'three'
 import { KEYBOARD_KEY, PLAYER } from '../../utils/constant'
+import Lines from './helpers/lines'
+import Player from './helpers/player'
 
 let game = ref(null)
 
@@ -19,14 +21,8 @@ onMounted(() => {
   renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
   game.value.appendChild(renderer.domElement)
 
-  const geometry = new THREE.BoxGeometry(PLAYER.SIZE, PLAYER.SIZE, PLAYER.SIZE)
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-  const cube = new THREE.Mesh(geometry, material)
-  cube.name = PLAYER.NAME
-  cube.position.set(0, -camera.getFilmHeight() / 2 + PLAYER.SIZE / 2, 480)
-  scene.add(cube)
-  drawLines(scene, camera)
-  drawLines2(scene, camera)
+  const player = new Player(scene, camera)
+  player.init()
 
   const clock = new THREE.Clock()
 
@@ -78,43 +74,6 @@ onMounted(() => {
     renderer.render(scene, camera)
   }
 
-  function drawLines(scene, camera) {
-    const material = new THREE.LineBasicMaterial({ color: 0x0000ff })
-
-    const points = []
-    points.push(new THREE.Vector3(camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 500))
-    points.push(new THREE.Vector3(camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 0))
-    points.push(new THREE.Vector3(-camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 0))
-    points.push(new THREE.Vector3(-camera.getFilmWidth() / 2, -camera.getFilmHeight() / 2, 500))
-    const geometry = new THREE.BufferGeometry().setFromPoints(points)
-    const line = new THREE.Line(geometry, material)
-    scene.add(line)
-  }
-
-  function drawLines2(scene, camera) {
-    const material = new THREE.LineBasicMaterial({ color: 0xff0000 })
-
-    const points = []
-    points.push(
-      new THREE.Vector3(
-        -camera.getFilmWidth() / 2,
-        -camera.getFilmHeight() / 2 + PLAYER.SIZE / 2,
-        480
-      )
-    )
-    points.push(
-      new THREE.Vector3(
-        camera.getFilmWidth() / 2,
-        -camera.getFilmHeight() / 2 + PLAYER.SIZE / 2,
-        480
-      )
-    )
-
-    const geometry = new THREE.BufferGeometry().setFromPoints(points)
-    const line = new THREE.Line(geometry, material)
-    scene.add(line)
-  }
-
   function setupKeyControls() {
     document.onkeydown = function (e) {
       switch (e.keyCode) {
@@ -158,6 +117,9 @@ onMounted(() => {
     }
   }
 
+  const lines = new Lines(scene, camera)
+  lines.addLinePlayerMovement()
+  lines.addLinePlayerArea()
   setupKeyControls()
   animate()
 })
