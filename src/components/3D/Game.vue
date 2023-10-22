@@ -32,11 +32,12 @@ onMounted(() => {
 
   let velocity = 0
   let direction = null
+  let previousDirection = null
   function movement(delta) {
     const cube = scene.getObjectByName(PLAYER.NAME)
 
     let newVelocity = velocity
-    if (velocity == 0) {
+    if (velocity == 0 || previousDirection !== direction) {
       newVelocity = PLAYER.IMPULSE
     }
     newVelocity += velocity * delta + PLAYER.ACCELERATION * Math.pow(delta, 2) * 0.5
@@ -62,6 +63,8 @@ onMounted(() => {
       default:
         velocity = 0
     }
+
+    previousDirection = direction
   }
 
   function update(delta) {
