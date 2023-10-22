@@ -12,6 +12,7 @@ export const CAMERA = {
 
 export const PLAYER = {
   NAME: 'player',
+  POSITION_X: 0,
   POSITION_Z: 480,
   SIZE: 2,
   ACCELERATION: 200,
@@ -20,5 +21,6 @@ export const PLAYER = {
 
 export const COLOR = {
   RED: 0xff0000,
+  GREEN: 0x00ff00,
   BLUE: 0x0000ff
 }
