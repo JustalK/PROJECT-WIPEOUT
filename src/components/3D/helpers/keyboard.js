@@ -1,4 +1,4 @@
-import { KEYBOARD_KEY } from '../../utils/constant'
+import { KEYBOARD_KEY } from '../../../utils/constant'
 
 export default class Keyboard {
   constructor() {
@@ -6,7 +6,7 @@ export default class Keyboard {
   }
 
   init() {
-    document.onkeydown = function (e) {
+    document.onkeydown = (e) => {
       switch (e.keyCode) {
         case KEYBOARD_KEY.LEFT:
           this.direction = KEYBOARD_KEY.LEFT
@@ -22,7 +22,7 @@ export default class Keyboard {
           break
       }
     }
-    document.onkeyup = function (e) {
+    document.onkeyup = (e) => {
       switch (e.keyCode) {
         case KEYBOARD_KEY.LEFT:
           if (this.direction === KEYBOARD_KEY.LEFT) {
@@ -30,17 +30,17 @@ export default class Keyboard {
           }
           break
         case KEYBOARD_KEY.UP:
-          if (direction === KEYBOARD_KEY.UP) {
+          if (this.direction === KEYBOARD_KEY.UP) {
             this.direction = null
           }
           break
         case KEYBOARD_KEY.RIGHT:
-          if (direction === KEYBOARD_KEY.RIGHT) {
+          if (this.direction === KEYBOARD_KEY.RIGHT) {
             this.direction = null
           }
           break
         case KEYBOARD_KEY.DOWN:
-          if (direction === KEYBOARD_KEY.DOWN) {
+          if (this.direction === KEYBOARD_KEY.DOWN) {
             this.direction = null
           }
           break
