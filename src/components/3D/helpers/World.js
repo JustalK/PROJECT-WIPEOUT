@@ -14,6 +14,8 @@ export default class World {
     this.camera.lookAt(CAMERA.TARGET_POSITION_X, CAMERA.TARGET_POSITION_Y, CAMERA.TARGET_POSITION_Z)
     this.renderer = new THREE.WebGLRenderer()
     this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
+
+    this.clock = new THREE.Clock()
   }
 
   attachTo(element) {
@@ -30,5 +32,9 @@ export default class World {
 
   getRenderer() {
     return this.renderer
+  }
+
+  getDelta() {
+    return this.clock.getDelta()
   }
 }

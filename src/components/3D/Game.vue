@@ -4,11 +4,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import * as THREE from 'three'
-import World from './helpers/world'
-import Lines from './helpers/lines'
-import Player from './helpers/player'
-import Keyboard from './helpers/keyboard'
+import World from './helpers/World'
+import Lines from './helpers/Lines'
+import Player from './helpers/Player'
+import Keyboard from './helpers/Keyboard'
 
 let game = ref(null)
 
@@ -22,16 +21,13 @@ onMounted(() => {
   const player = new Player(world.getScene(), world.getCamera(), keyboard)
   player.init()
 
-  const clock = new THREE.Clock()
-
   function update(delta) {
     player.tick(delta)
   }
 
   function animate() {
-    const delta = clock.getDelta()
     requestAnimationFrame(animate)
-    update(delta)
+    update(world.getDelta())
     world.getRenderer().render(world.getScene(), world.getCamera())
   }
 
