@@ -9,6 +9,7 @@ import { KEYBOARD_KEY, PLAYER } from '../../utils/constant'
 import World from './helpers/world'
 import Lines from './helpers/lines'
 import Player from './helpers/player'
+import Keyboard from './helpers/keyboard'
 
 let game = ref(null)
 
@@ -18,6 +19,9 @@ onMounted(() => {
 
   const player = new Player(world.getScene(), world.getCamera())
   player.init()
+
+  const keyboard = new Keyboard()
+  keyboard.init()
 
   const clock = new THREE.Clock()
 
@@ -67,49 +71,6 @@ onMounted(() => {
     requestAnimationFrame(animate)
     update(delta)
     world.getRenderer().render(world.getScene(), world.getCamera())
-  }
-
-  function setupKeyControls() {
-    document.onkeydown = function (e) {
-      switch (e.keyCode) {
-        case KEYBOARD_KEY.LEFT:
-          direction = KEYBOARD_KEY.LEFT
-          break
-        case KEYBOARD_KEY.UP:
-          direction = KEYBOARD_KEY.UP
-          break
-        case KEYBOARD_KEY.RIGHT:
-          direction = KEYBOARD_KEY.RIGHT
-          break
-        case KEYBOARD_KEY.DOWN:
-          direction = KEYBOARD_KEY.DOWN
-          break
-      }
-    }
-    document.onkeyup = function (e) {
-      switch (e.keyCode) {
-        case KEYBOARD_KEY.LEFT:
-          if (direction === KEYBOARD_KEY.LEFT) {
-            direction = null
-          }
-          break
-        case KEYBOARD_KEY.UP:
-          if (direction === KEYBOARD_KEY.UP) {
-            direction = null
-          }
-          break
-        case KEYBOARD_KEY.RIGHT:
-          if (direction === KEYBOARD_KEY.RIGHT) {
-            direction = null
-          }
-          break
-        case KEYBOARD_KEY.DOWN:
-          if (direction === KEYBOARD_KEY.DOWN) {
-            direction = null
-          }
-          break
-      }
-    }
   }
 
   const lines = new Lines(world.getScene(), world.getCamera())

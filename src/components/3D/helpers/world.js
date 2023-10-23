@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { PLAYER, COLOR, CAMERA } from '../../../utils/constant'
+import { CAMERA } from '../../../utils/constant'
 
 export default class World {
   constructor() {
