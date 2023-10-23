@@ -6,22 +6,17 @@
 import { ref, onMounted, onUpdated } from 'vue'
 import * as THREE from 'three'
 import { KEYBOARD_KEY, PLAYER } from '../../utils/constant'
+import World from './helpers/world'
 import Lines from './helpers/lines'
 import Player from './helpers/player'
 
 let game = ref(null)
 
 onMounted(() => {
-  const scene = new THREE.Scene()
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500)
-  camera.position.set(0, 0, 500)
-  camera.lookAt(0, 0, 0)
+  const world = new World()
+  world.attachTo(game.value)
 
-  const renderer = new THREE.WebGLRenderer()
-  renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
-  game.value.appendChild(renderer.domElement)
-
-  const player = new Player(scene, camera)
+  const player = new Player(world.getScene(), world.getCamera())
   player.init()
 
   const clock = new THREE.Clock()
@@ -117,7 +112,7 @@ onMounted(() => {
     }
   }
 
-  const lines = new Lines(scene, camera)
+  const lines = new Lines(world.getScene(), world.getCamera())
   lines.addLinePlayerMovement()
   lines.addLinePlayerArea()
   setupKeyControls()
