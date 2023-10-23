@@ -25,7 +25,7 @@ onMounted(() => {
   let direction = null
   let previousDirection = null
   function movement(delta) {
-    const cube = scene.getObjectByName(PLAYER.NAME)
+    const cube = world.getScene().getObjectByName(PLAYER.NAME)
 
     let newVelocity = velocity
     if (velocity == 0 || previousDirection !== direction) {
@@ -66,7 +66,7 @@ onMounted(() => {
     const delta = clock.getDelta()
     requestAnimationFrame(animate)
     update(delta)
-    renderer.render(scene, camera)
+    world.getRenderer().render(world.getScene(), world.getCamera())
   }
 
   function setupKeyControls() {

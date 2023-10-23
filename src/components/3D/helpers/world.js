@@ -10,14 +10,14 @@ export default class World {
       0.1,
       CAMERA.POSITION_Z
     )
-    camera.position.set(CAMERA.POSITION_X, CAMERA.POSITION_Y, CAMERA.POSITION_Z)
-    camera.lookAt(CAMERA.TARGET_POSITION_X, CAMERA.TARGET_POSITION_Y, CAMERA.TARGET_POSITION_Z)
+    this.camera.position.set(CAMERA.POSITION_X, CAMERA.POSITION_Y, CAMERA.POSITION_Z)
+    this.camera.lookAt(CAMERA.TARGET_POSITION_X, CAMERA.TARGET_POSITION_Y, CAMERA.TARGET_POSITION_Z)
+    this.renderer = new THREE.WebGLRenderer()
+    this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
   }
 
   attachTo(element) {
-    const renderer = new THREE.WebGLRenderer()
-    renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
-    element.appendChild(renderer.domElement)
+    element.appendChild(this.renderer.domElement)
   }
 
   getCamera() {
@@ -26,5 +26,9 @@ export default class World {
 
   getScene() {
     return this.scene
+  }
+
+  getRenderer() {
+    return this.renderer
   }
 }
