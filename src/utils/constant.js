@@ -6,7 +6,12 @@ export const KEYBOARD_KEY = {
 }
 
 export const CAMERA = {
+  FOV: 75,
+  POSITION_X: 0,
+  POSITION_Y: 0,
   POSITION_Z: 500,
+  TARGET_POSITION_X: 0,
+  TARGET_POSITION_Y: 0,
   TARGET_POSITION_Z: 0
 }
 
