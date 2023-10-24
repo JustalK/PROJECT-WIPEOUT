@@ -7,7 +7,7 @@ export const KEYBOARD_KEY = {
 
 export const ENNEMY = {
   NAME: 'ennemy',
-  SPEED: 0.5
+  SPEED: 100
 }
 
 export const CAMERA = {

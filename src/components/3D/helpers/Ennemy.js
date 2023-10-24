@@ -16,8 +16,17 @@ export default class Ennemy {
     this.scene.add(plane)
   }
 
+  reset() {
+    const plane = this.scene.getObjectByName(ENNEMY.NAME)
+    plane.position.z = 0
+  }
+
   tick(delta) {
     const plane = this.scene.getObjectByName(ENNEMY.NAME)
-    plane.position.z += ENNEMY.SPEED
+    plane.position.z += ENNEMY.SPEED * delta 
+
+    if (plane.position.z > 500) {
+        this.reset()
+    }
   }
 }
