@@ -5,6 +5,11 @@ export const KEYBOARD_KEY = {
   DOWN: 40
 }
 
+export const ENNEMY = {
+  NAME: 'ennemy',
+  SPEED: 100
+}
+
 export const CAMERA = {
   FOV: 75,
   POSITION_X: 0,
@@ -27,5 +32,6 @@ export const PLAYER = {
 export const COLOR = {
   RED: 0xff0000,
   GREEN: 0x00ff00,
-  BLUE: 0x0000ff
+  BLUE: 0x0000ff,
+  PINK: 0xff00ff
 }
