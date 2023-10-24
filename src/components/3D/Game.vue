@@ -27,6 +27,7 @@ onMounted(() => {
 
   function update(delta) {
     player.tick(delta)
+    ennemy.tick(delta)
   }
 
   function animate() {
