@@ -5,7 +5,7 @@ export default class Ennemies {
     this.scene = scene
     this.camera = camera
     this.ennemies = []
-    this.numberEnnemies = 50
+    this.numberEnnemies = 1
   }
 
   tick(delta) {
