@@ -5,10 +5,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import World from './helpers/World'
-import Ennemy from './helpers/Ennemy'
 import Lines from './helpers/Lines'
 import Player from './helpers/Player'
 import Keyboard from './helpers/Keyboard'
+import Ennemies from './helpers/Ennemies'
 
 let game = ref(null)
 
@@ -22,12 +22,11 @@ onMounted(() => {
   const player = new Player(world.getScene(), world.getCamera(), keyboard)
   player.init()
 
-  const ennemy = new Ennemy(world.getScene(), world.getCamera())
-  ennemy.init()
+  const ennemies = new Ennemies(world.getScene(), world.getCamera())
 
   function update(delta) {
     player.tick(delta)
-    ennemy.tick(delta)
+    ennemies.tick(delta)
   }
 
   function animate() {
