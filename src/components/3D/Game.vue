@@ -22,11 +22,22 @@ onMounted(() => {
   const player = new Player(world.getScene(), world.getCamera(), keyboard)
   player.init()
 
+  const numberEnnemies = 2
+  const ennemies = []
   const ennemy = new Ennemy(world.getScene(), world.getCamera())
   ennemy.init()
 
   function update(delta) {
     player.tick(delta)
+    /**
+    if (ennemies.length < numberEnnemies) {
+      for (const e of ennemies) {
+        if (e.) {
+
+        }
+      }
+    }
+    **/
     ennemy.tick(delta)
   }
 
