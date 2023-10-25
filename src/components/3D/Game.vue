@@ -22,23 +22,27 @@ onMounted(() => {
   const player = new Player(world.getScene(), world.getCamera(), keyboard)
   player.init()
 
-  const numberEnnemies = 2
+  const numberEnnemies = 10
   const ennemies = []
-  const ennemy = new Ennemy(world.getScene(), world.getCamera())
-  ennemy.init()
 
   function update(delta) {
+    console.log(ennemies.length)
     player.tick(delta)
-    /**
     if (ennemies.length < numberEnnemies) {
+      let addEnnemy = true
       for (const e of ennemies) {
-        if (e.) {
-
+        if (e.getPositionZ() < 500 / numberEnnemies) {
+          addEnnemy = false
         }
       }
+      if (addEnnemy) {
+        ennemies.push(new Ennemy(world.getScene(), world.getCamera()))
+        ennemies[ennemies.length - 1].init()
+      }
     }
-    **/
-    ennemy.tick(delta)
+    for (const e of ennemies) {
+      e.tick(delta)
+    }
   }
 
   function animate() {
