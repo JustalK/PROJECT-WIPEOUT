@@ -5,10 +5,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import World from './helpers/World'
-import Ennemy from './helpers/Ennemy'
 import Lines from './helpers/Lines'
 import Player from './helpers/Player'
 import Keyboard from './helpers/Keyboard'
+import Ennemies from './helpers/Ennemies'
 
 let game = ref(null)
 
@@ -22,27 +22,11 @@ onMounted(() => {
   const player = new Player(world.getScene(), world.getCamera(), keyboard)
   player.init()
 
-  const numberEnnemies = 10
-  const ennemies = []
+  const ennemies = new Ennemies(world.getScene(), world.getCamera())
 
   function update(delta) {
-    console.log(ennemies.length)
     player.tick(delta)
-    if (ennemies.length < numberEnnemies) {
-      let addEnnemy = true
-      for (const e of ennemies) {
-        if (e.getPositionZ() < 500 / numberEnnemies) {
-          addEnnemy = false
-        }
-      }
-      if (addEnnemy) {
-        ennemies.push(new Ennemy(world.getScene(), world.getCamera()))
-        ennemies[ennemies.length - 1].init()
-      }
-    }
-    for (const e of ennemies) {
-      e.tick(delta)
-    }
+    ennemies.tick(delta)
   }
 
   function animate() {
