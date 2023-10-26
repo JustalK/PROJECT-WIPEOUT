@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { CAMERA } from '../../../utils/constant'
+import { CAMERA, GAME } from '../../../utils/constant'
 
 export default class World {
   constructor() {
@@ -16,6 +16,15 @@ export default class World {
     this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
 
     this.clock = new THREE.Clock()
+    this.status = GAME.START
+  }
+
+  stop() {
+    this.status = GAME.STOP
+  }
+
+  restart() {
+    this.status = GAME.START
   }
 
   attachTo(element) {
@@ -36,5 +45,9 @@ export default class World {
 
   getDelta() {
     return this.clock.getDelta()
+  }
+
+  getStatus() {
+    return this.status
   }
 }

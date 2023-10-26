@@ -1,18 +1,27 @@
+import { GAME, CAMERA } from '../../../utils/constant'
 import Ennemy from './Ennemy'
 
 export default class Ennemies {
-  constructor(scene, camera) {
-    this.scene = scene
-    this.camera = camera
+  constructor(world) {
+    this.world = world
+    this.scene = world.getScene()
+    this.camera = world.getCamera()
     this.ennemies = []
-    this.numberEnnemies = 1
+    this.numberEnnemies = 10
+  }
+
+  restart() {
+    for (const e of this.ennemies) {
+      e.restart()
+    }
+    this.ennemies = []
   }
 
   tick(delta) {
     if (this.ennemies.length < this.numberEnnemies) {
       let addEnnemy = true
       for (const e of this.ennemies) {
-        if (e.getPositionZ() < 500 / this.numberEnnemies) {
+        if (e.getPositionZ() < CAMERA.POSITION_Z / this.numberEnnemies) {
           addEnnemy = false
         }
       }
@@ -22,7 +31,10 @@ export default class Ennemies {
       }
     }
     for (const e of this.ennemies) {
-      e.tick(delta)
+      const rsl = e.tick(delta)
+      if (rsl === GAME.STOP) {
+        this.world.stop()
+      }
     }
   }
 }

@@ -22,6 +22,11 @@ export default class Player {
     this.scene.add(cube)
   }
 
+  restart() {
+    const cube = this.scene.getObjectByName(PLAYER.NAME)
+    cube.position.set(PLAYER.POSITION_X, -this.halfHeight + this.halfSizePlayer, PLAYER.POSITION_Z)
+  }
+
   tick(delta) {
     const cube = this.scene.getObjectByName(PLAYER.NAME)
 

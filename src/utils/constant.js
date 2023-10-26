@@ -1,4 +1,11 @@
+export const GAME = {
+  STOP: 'stop',
+  PAUSED: 'paused',
+  START: 'start'
+}
+
 export const KEYBOARD_KEY = {
+  SPACE: 32,
   LEFT: 37,
   RIGHT: 39,
   UP: 38,
