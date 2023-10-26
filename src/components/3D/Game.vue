@@ -9,6 +9,7 @@ import Lines from './helpers/Lines'
 import Player from './helpers/Player'
 import Keyboard from './helpers/Keyboard'
 import Ennemies from './helpers/Ennemies'
+import { GAME } from '../../utils/constant'
 
 let game = ref(null)
 
@@ -24,9 +25,12 @@ onMounted(() => {
 
   const ennemies = new Ennemies(world.getScene(), world.getCamera())
 
+  let status = null
   function update(delta) {
-    player.tick(delta)
-    ennemies.tick(delta)
+    if (status !== GAME.STOP) {
+      player.tick(delta)
+      status = ennemies.tick(delta)
+    }
   }
 
   function animate() {

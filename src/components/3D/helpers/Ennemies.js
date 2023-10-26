@@ -1,3 +1,4 @@
+import { GAME } from '../../../utils/constant'
 import Ennemy from './Ennemy'
 
 export default class Ennemies {
@@ -22,7 +23,10 @@ export default class Ennemies {
       }
     }
     for (const e of this.ennemies) {
-      e.tick(delta)
+      const rsl = e.tick(delta)
+      if (rsl === GAME.STOP) {
+        return GAME.STOP
+      }
     }
   }
 }

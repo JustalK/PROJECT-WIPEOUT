@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { CAMERA, COLOR, ENNEMY, PLAYER } from '../../../utils/constant'
+import { CAMERA, COLOR, ENNEMY, PLAYER, GAME } from '../../../utils/constant'
 
 export default class Ennemy {
   constructor(scene, camera) {
@@ -35,21 +35,22 @@ export default class Ennemy {
   }
 
   isPlayerKilled() {
-    //console.log('Hello', this.ennemy.position.x, this.camera.getFilmWidth() / 8)
     if (this.ennemy.position.z > 480) {
       const min = this.ennemy.position.x - this.camera.getFilmWidth() / 8
       const max = this.ennemy.position.x + this.camera.getFilmWidth() / 8
       if (this.player.position.x < max && this.player.position.x > min) {
-        console.log('TRUE')
+        return true
       }
     }
-    //console.log(this.player.position.x, this.player.position.y)
+    return false
   }
 
   tick(delta) {
     this.ennemy.position.z += ENNEMY.SPEED * delta
 
-    this.isPlayerKilled()
+    if (this.isPlayerKilled()) {
+      return GAME.STOP
+    }
 
     if (this.ennemy.position.z > CAMERA.POSITION_Z) {
       this.reset()
