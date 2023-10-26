@@ -11,6 +11,10 @@ export default class Ennemy {
     this.player = this.scene.getObjectByName(PLAYER.NAME)
   }
 
+  restart() {
+    this.scene.remove(this.ennemy)
+  }
+
   init() {
     const geometry = new THREE.PlaneGeometry(
       this.camera.getFilmWidth() / 4,

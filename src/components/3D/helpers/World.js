@@ -23,6 +23,10 @@ export default class World {
     this.status = GAME.STOP
   }
 
+  restart() {
+    this.status = GAME.START
+  }
+
   attachTo(element) {
     element.appendChild(this.renderer.domElement)
   }

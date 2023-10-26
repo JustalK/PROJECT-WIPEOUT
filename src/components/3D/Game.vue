@@ -29,6 +29,13 @@ onMounted(() => {
     if (world.getStatus() !== GAME.STOP) {
       player.tick(delta)
       ennemies.tick(delta)
+    } else {
+      if (keyboard.getNewGame()) {
+        keyboard.restart()
+        player.restart()
+        ennemies.restart()
+        world.restart()
+      }
     }
   }
 

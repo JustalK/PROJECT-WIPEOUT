@@ -10,6 +10,13 @@ export default class Ennemies {
     this.numberEnnemies = 1
   }
 
+  restart() {
+    for (const e of this.ennemies) {
+      e.restart()
+    }
+    this.ennemies = []
+  }
+
   tick(delta) {
     if (this.ennemies.length < this.numberEnnemies) {
       let addEnnemy = true

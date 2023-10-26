@@ -3,6 +3,12 @@ import { KEYBOARD_KEY } from '../../../utils/constant'
 export default class Keyboard {
   constructor() {
     this.direction = null
+    this.newGame = false
+  }
+
+  restart() {
+    this.direction = null
+    this.newGame = false
   }
 
   init() {
@@ -19,6 +25,9 @@ export default class Keyboard {
           break
         case KEYBOARD_KEY.DOWN:
           this.direction = KEYBOARD_KEY.DOWN
+          break
+        case KEYBOARD_KEY.SPACE:
+          this.newGame = true
           break
       }
     }
@@ -50,5 +59,9 @@ export default class Keyboard {
 
   getDirection() {
     return this.direction
+  }
+
+  getNewGame() {
+    return this.newGame
   }
 }

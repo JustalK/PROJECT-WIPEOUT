@@ -11,7 +11,6 @@ export default class Player {
     this.halfHeight = camera.getFilmHeight() / 2
     this.halfWidth = camera.getFilmWidth() / 2
     this.halfSizePlayer = PLAYER.SIZE / 2
-    this.isDead = false
   }
 
   init() {
@@ -23,9 +22,9 @@ export default class Player {
     this.scene.add(cube)
   }
 
-  dead() {
-    this.isDead = true
-    console.log('DEAD')
+  restart() {
+    const cube = this.scene.getObjectByName(PLAYER.NAME)
+    cube.position.set(PLAYER.POSITION_X, -this.halfHeight + this.halfSizePlayer, PLAYER.POSITION_Z)
   }
 
   tick(delta) {
