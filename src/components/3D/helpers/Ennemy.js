@@ -7,6 +7,8 @@ export default class Ennemy {
     this.camera = camera
     this.maxPositionX = this.camera.getFilmWidth() / 4
     this.minPositionX = -this.maxPositionX
+    this.maxPositionZ = PLAYER.POSITION_Z + PLAYER.SIZE / 2
+    this.minPositionZ = PLAYER.POSITION_Z - PLAYER.SIZE / 2
     this.ennemy = null
     this.player = this.scene.getObjectByName(PLAYER.NAME)
   }
@@ -39,10 +41,10 @@ export default class Ennemy {
   }
 
   isPlayerKilled() {
-    if (this.ennemy.position.z > 480) {
+    if (this.ennemy.position.z > this.minPositionZ && this.ennemy.position.z < this.maxPositionZ) {
       const min = this.ennemy.position.x - this.camera.getFilmWidth() / 8
       const max = this.ennemy.position.x + this.camera.getFilmWidth() / 8
-      if (this.player.position.x < max && this.player.position.x > min) {
+      if (this.player.position.x <= max && this.player.position.x >= min) {
         return true
       }
     }

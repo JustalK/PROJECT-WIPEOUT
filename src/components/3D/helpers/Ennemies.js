@@ -1,4 +1,4 @@
-import { GAME } from '../../../utils/constant'
+import { GAME, CAMERA } from '../../../utils/constant'
 import Ennemy from './Ennemy'
 
 export default class Ennemies {
@@ -7,7 +7,7 @@ export default class Ennemies {
     this.scene = world.getScene()
     this.camera = world.getCamera()
     this.ennemies = []
-    this.numberEnnemies = 1
+    this.numberEnnemies = 10
   }
 
   restart() {
@@ -21,7 +21,7 @@ export default class Ennemies {
     if (this.ennemies.length < this.numberEnnemies) {
       let addEnnemy = true
       for (const e of this.ennemies) {
-        if (e.getPositionZ() < 500 / this.numberEnnemies) {
+        if (e.getPositionZ() < CAMERA.POSITION_Z / this.numberEnnemies) {
           addEnnemy = false
         }
       }
