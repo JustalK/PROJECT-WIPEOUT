@@ -2,9 +2,10 @@ import { GAME } from '../../../utils/constant'
 import Ennemy from './Ennemy'
 
 export default class Ennemies {
-  constructor(scene, camera) {
-    this.scene = scene
-    this.camera = camera
+  constructor(world) {
+    this.world = world
+    this.scene = world.getScene()
+    this.camera = world.getCamera()
     this.ennemies = []
     this.numberEnnemies = 1
   }
@@ -25,7 +26,7 @@ export default class Ennemies {
     for (const e of this.ennemies) {
       const rsl = e.tick(delta)
       if (rsl === GAME.STOP) {
-        return GAME.STOP
+        this.world.stop()
       }
     }
   }

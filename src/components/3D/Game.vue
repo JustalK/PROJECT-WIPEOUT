@@ -23,13 +23,12 @@ onMounted(() => {
   const player = new Player(world.getScene(), world.getCamera(), keyboard)
   player.init()
 
-  const ennemies = new Ennemies(world.getScene(), world.getCamera())
+  const ennemies = new Ennemies(world)
 
-  let status = null
   function update(delta) {
-    if (status !== GAME.STOP) {
+    if (world.getStatus() !== GAME.STOP) {
       player.tick(delta)
-      status = ennemies.tick(delta)
+      ennemies.tick(delta)
     }
   }
 
