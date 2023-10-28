@@ -1,5 +1,10 @@
 <template>
-  <div ref="game" class="game"></div>
+  <div ref="game" class="game">
+    <div id="level">LEVEL: 0</div>
+    <div id="bar">
+      <div id="percentage"></div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -59,5 +64,25 @@ onMounted(() => {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+#level {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  color: white;
+  z-index: 100;
+}
+#bar {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 100px;
+  height: 20px;
+  border: 1px solid white;
+}
+#percentage {
+  width: 80%;
+  height: 20px;
+  background-color: white;
 }
 </style>
