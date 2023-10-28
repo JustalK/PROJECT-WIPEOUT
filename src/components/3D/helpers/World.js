@@ -1,8 +1,8 @@
 import * as THREE from 'three'
-import { CAMERA, GAME } from '../../../utils/constant'
+import { CAMERA, GAME, HTML } from '../../../utils/constant'
 
 export default class World {
-  constructor() {
+  constructor(levelHTML, percentage) {
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(
       CAMERA.FOV,
@@ -17,6 +17,34 @@ export default class World {
 
     this.clock = new THREE.Clock()
     this.status = GAME.START
+    this.startTime = this.clock.getElapsedTime()
+    this.level = 1
+    this.levelHTML = levelHTML
+    this.percentage = percentage
+    this.setLevel(this.level)
+  }
+
+  tick() {
+    this.setPercentage()
+    if (this.clock.getElapsedTime() - this.startTime >= 2 * this.level) {
+      this.increaseLevel()
+    }
+  }
+
+  increaseLevel() {
+    this.level++
+    this.setLevel(this.level)
+    this.startTime = this.clock.getElapsedTime()
+  }
+
+  setLevel(value) {
+    this.levelHTML.innerHTML = HTML.SPACE.repeat(3 - value.toString().length) + value
+  }
+
+  setPercentage() {
+    this.percentage.style.width = `${
+      ((this.clock.getElapsedTime() - this.startTime) * 100) / (2 * this.level)
+    }%`
   }
 
   stop() {
@@ -25,6 +53,7 @@ export default class World {
 
   restart() {
     this.status = GAME.START
+    this.startTime = this.clock.getElapsedTime()
   }
 
   attachTo(element) {
@@ -49,5 +78,9 @@ export default class World {
 
   getStatus() {
     return this.status
+  }
+
+  getLevel() {
+    return this.level
   }
 }

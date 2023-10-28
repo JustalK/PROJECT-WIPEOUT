@@ -1,5 +1,10 @@
 <template>
-  <div ref="game" class="game"></div>
+  <div ref="game" class="game">
+    <div class="level">LEVEL: <span ref="levelHTML" class="level_value">0</span></div>
+    <div class="bar">
+      <div ref="percentage" class="percentage"></div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -12,9 +17,11 @@ import Ennemies from './helpers/Ennemies'
 import { GAME } from '../../utils/constant'
 
 let game = ref(null)
+let levelHTML = ref(null)
+let percentage = ref(null)
 
 onMounted(() => {
-  const world = new World()
+  const world = new World(levelHTML.value, percentage.value)
   world.attachTo(game.value)
 
   const keyboard = new Keyboard()
@@ -29,6 +36,7 @@ onMounted(() => {
     if (world.getStatus() !== GAME.STOP) {
       player.tick(delta)
       ennemies.tick(delta)
+      world.tick()
     } else {
       if (keyboard.getNewGame()) {
         keyboard.restart()
@@ -59,5 +67,26 @@ onMounted(() => {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+.level {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  color: white;
+  z-index: 100;
+}
+.bar {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 100px;
+  height: 20px;
+  border: 1px solid white;
+}
+.percentage {
+  width: 80%;
+  height: 20px;
+  background-color: white;
+  transition: 0.05s all ease;
 }
 </style>
