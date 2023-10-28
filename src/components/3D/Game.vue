@@ -87,6 +87,6 @@ onMounted(() => {
   width: 80%;
   height: 20px;
   background-color: white;
-  transition: 1s all ease;
+  transition: 0.05s all ease;
 }
 </style>
