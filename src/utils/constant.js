@@ -4,6 +4,10 @@ export const GAME = {
   START: 'start'
 }
 
+export const HTML = {
+  SPACE: '&nbsp;'
+}
+
 export const KEYBOARD_KEY = {
   SPACE: 32,
   LEFT: 37,
