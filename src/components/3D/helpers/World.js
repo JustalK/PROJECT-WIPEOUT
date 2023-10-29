@@ -18,20 +18,25 @@ export default class World {
     this.clock = new THREE.Clock()
     this.status = GAME.START
     this.startTime = this.clock.getElapsedTime()
+    this.isReadyNewLevel = false
     this.level = 1
     this.levelHTML = levelHTML
     this.percentage = percentage
     this.setLevel(this.level)
   }
 
-  tick() {
+  tick(numberEnnemies) {
     this.setPercentage()
-    if (this.clock.getElapsedTime() - this.startTime >= 2 * this.level) {
-      this.increaseLevel()
+    if (this.clock.getElapsedTime() - this.startTime >= GAME.LEVEL_SPEED * this.level) {
+      this.isReadyNewLevel = true
+      if (this.level && numberEnnemies === 0) {
+        this.increaseLevel()
+      }
     }
   }
 
   increaseLevel() {
+    this.isReadyNewLevel = false
     this.level++
     this.setLevel(this.level)
     this.startTime = this.clock.getElapsedTime()
@@ -42,9 +47,11 @@ export default class World {
   }
 
   setPercentage() {
-    this.percentage.style.width = `${
-      ((this.clock.getElapsedTime() - this.startTime) * 100) / (2 * this.level)
-    }%`
+    this.percentage.style.width = `${Math.min(
+      ((this.clock.getElapsedTime() - this.startTime) * HTML.MAX_WIDTH) /
+        (GAME.LEVEL_SPEED * this.level),
+      HTML.MAX_WIDTH
+    )}%`
   }
 
   stop() {
@@ -53,7 +60,9 @@ export default class World {
 
   restart() {
     this.status = GAME.START
+    this.level = 0
     this.startTime = this.clock.getElapsedTime()
+    this.isReadyNewLevel = false
   }
 
   attachTo(element) {
@@ -82,5 +91,9 @@ export default class World {
 
   getLevel() {
     return this.level
+  }
+
+  getIsReadyNewLevel() {
+    return this.isReadyNewLevel
   }
 }

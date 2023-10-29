@@ -7,7 +7,15 @@ export default class Ennemies {
     this.scene = world.getScene()
     this.camera = world.getCamera()
     this.ennemies = []
-    this.numberEnnemies = 10
+    this.numberEnnemies = 1
+    this.currentLevel = world.getLevel()
+  }
+
+  increaseLevel() {
+    if (this.ennemies.length === 0) {
+      this.currentLevel++
+      this.numberEnnemies++
+    }
   }
 
   restart() {
@@ -18,23 +26,34 @@ export default class Ennemies {
   }
 
   tick(delta) {
-    if (this.ennemies.length < this.numberEnnemies) {
-      let addEnnemy = true
-      for (const e of this.ennemies) {
-        if (e.getPositionZ() < CAMERA.POSITION_Z / this.numberEnnemies) {
-          addEnnemy = false
+    if (this.currentLevel !== this.world.getLevel()) {
+      this.increaseLevel()
+    } else if (!this.world.getIsReadyNewLevel()) {
+      if (this.ennemies.length < this.numberEnnemies) {
+        let addEnnemy = true
+        for (const e of this.ennemies) {
+          if (e.getPositionZ() < CAMERA.POSITION_Z / this.numberEnnemies) {
+            addEnnemy = false
+          }
+        }
+        if (addEnnemy) {
+          this.ennemies.push(new Ennemy(this.scene, this.camera))
+          this.ennemies[this.ennemies.length - 1].init()
         }
       }
-      if (addEnnemy) {
-        this.ennemies.push(new Ennemy(this.scene, this.camera))
-        this.ennemies[this.ennemies.length - 1].init()
-      }
     }
-    for (const e of this.ennemies) {
-      const rsl = e.tick(delta)
+    for (const [index, e] of this.ennemies.entries()) {
+      const rsl = e.tick(delta, this.world.getIsReadyNewLevel())
+      if (rsl === GAME.DELETE_ENNEMY) {
+        this.ennemies.splice(index, 1)
+      }
       if (rsl === GAME.STOP) {
         this.world.stop()
       }
     }
+  }
+
+  getNumberEnnemies() {
+    return this.ennemies.length
   }
 }

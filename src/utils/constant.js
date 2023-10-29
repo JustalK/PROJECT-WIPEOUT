@@ -1,11 +1,14 @@
 export const GAME = {
   STOP: 'stop',
   PAUSED: 'paused',
-  START: 'start'
+  START: 'start',
+  DELETE_ENNEMY: 'delete_ennemy',
+  LEVEL_SPEED: 2
 }
 
 export const HTML = {
-  SPACE: '&nbsp;'
+  SPACE: '&nbsp;',
+  MAX_WIDTH: 100
 }
 
 export const KEYBOARD_KEY = {
