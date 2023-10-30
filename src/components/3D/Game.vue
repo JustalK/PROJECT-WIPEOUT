@@ -27,7 +27,7 @@ onMounted(() => {
   const keyboard = new Keyboard()
   keyboard.init()
 
-  const player = new Player(world.getScene(), world.getCamera(), keyboard)
+  const player = new Player(keyboard)
   player.init()
 
   const ennemies = new Ennemies(world)
@@ -36,7 +36,7 @@ onMounted(() => {
     if (world.getStatus() !== GAME.STOP) {
       player.tick(delta)
       ennemies.tick(delta)
-      world.tick(ennemies.getNumberEnnemies())
+      world.tick()
     } else {
       if (keyboard.getNewGame()) {
         keyboard.restart()
@@ -50,10 +50,10 @@ onMounted(() => {
   function animate() {
     requestAnimationFrame(animate)
     update(world.getDelta())
-    world.getRenderer().render(world.getScene(), world.getCamera())
+    world.getRenderer().render(World.scene, World.camera)
   }
 
-  const lines = new Lines(world.getScene(), world.getCamera())
+  const lines = new Lines()
   lines.addLinePlayerMovement()
   lines.addLinePlayerArea()
 
