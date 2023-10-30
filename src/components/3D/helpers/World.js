@@ -1,17 +1,24 @@
 import * as THREE from 'three'
+import Ennemies from './Ennemies'
 import { CAMERA, GAME, HTML } from '../../../utils/constant'
 
 export default class World {
+  static scene = null
+  static camera = null
   constructor(levelHTML, percentage) {
-    this.scene = new THREE.Scene()
-    this.camera = new THREE.PerspectiveCamera(
+    World.scene = new THREE.Scene()
+    World.camera = new THREE.PerspectiveCamera(
       CAMERA.FOV,
       window.innerWidth / window.innerHeight,
       0.1,
       CAMERA.POSITION_Z
     )
-    this.camera.position.set(CAMERA.POSITION_X, CAMERA.POSITION_Y, CAMERA.POSITION_Z)
-    this.camera.lookAt(CAMERA.TARGET_POSITION_X, CAMERA.TARGET_POSITION_Y, CAMERA.TARGET_POSITION_Z)
+    World.camera.position.set(CAMERA.POSITION_X, CAMERA.POSITION_Y, CAMERA.POSITION_Z)
+    World.camera.lookAt(
+      CAMERA.TARGET_POSITION_X,
+      CAMERA.TARGET_POSITION_Y,
+      CAMERA.TARGET_POSITION_Z
+    )
     this.renderer = new THREE.WebGLRenderer()
     this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
 
@@ -25,11 +32,11 @@ export default class World {
     this.setLevel(this.level)
   }
 
-  tick(numberEnnemies) {
+  tick() {
     this.setPercentage()
     if (this.clock.getElapsedTime() - this.startTime >= GAME.LEVEL_SPEED * this.level) {
       this.isReadyNewLevel = true
-      if (this.level && numberEnnemies === 0) {
+      if (this.level && Ennemies.getNumberEnnemies() === 0) {
         this.increaseLevel()
       }
     }
@@ -67,14 +74,6 @@ export default class World {
 
   attachTo(element) {
     element.appendChild(this.renderer.domElement)
-  }
-
-  getCamera() {
-    return this.camera
-  }
-
-  getScene() {
-    return this.scene
   }
 
   getRenderer() {

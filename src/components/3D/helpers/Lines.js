@@ -1,12 +1,11 @@
 import * as THREE from 'three'
 import { PLAYER, CAMERA, COLOR } from '../../../utils/constant'
+import World from './World'
 
 export default class Lines {
-  constructor(scene, camera) {
-    this.scene = scene
-    this.camera = camera
-    this.halfWidth = camera.getFilmWidth() / 2
-    this.halfHeight = camera.getFilmHeight() / 2
+  constructor() {
+    this.halfWidth = World.camera.getFilmWidth() / 2
+    this.halfHeight = World.camera.getFilmHeight() / 2
     this.halfSizePlayer = PLAYER.SIZE / 2
   }
 
@@ -44,6 +43,6 @@ export default class Lines {
     const material = new THREE.LineBasicMaterial({ color })
     const geometry = new THREE.BufferGeometry().setFromPoints(points)
     const line = new THREE.Line(geometry, material)
-    this.scene.add(line)
+    World.scene.add(line)
   }
 }

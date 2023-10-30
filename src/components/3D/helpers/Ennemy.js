@@ -1,32 +1,31 @@
 import * as THREE from 'three'
 import { CAMERA, COLOR, ENNEMY, PLAYER, GAME } from '../../../utils/constant'
+import World from './World'
 
 export default class Ennemy {
-  constructor(scene, camera) {
-    this.scene = scene
-    this.camera = camera
-    this.maxPositionX = this.camera.getFilmWidth() / 4
+  constructor() {
+    this.maxPositionX = World.camera.getFilmWidth() / 4
     this.minPositionX = -this.maxPositionX
     this.maxPositionZ = PLAYER.POSITION_Z + PLAYER.SIZE / 2
     this.minPositionZ = PLAYER.POSITION_Z - PLAYER.SIZE / 2
     this.ennemy = null
-    this.player = this.scene.getObjectByName(PLAYER.NAME)
+    this.player = World.scene.getObjectByName(PLAYER.NAME)
   }
 
   restart() {
-    this.scene.remove(this.ennemy)
+    World.scene.remove(this.ennemy)
   }
 
   init() {
     const geometry = new THREE.PlaneGeometry(
-      this.camera.getFilmWidth() / 4,
-      this.camera.getFilmHeight() / 4
+      World.camera.getFilmWidth() / 4,
+      World.camera.getFilmHeight() / 4
     )
     const material = new THREE.MeshBasicMaterial({ color: COLOR.PINK, side: THREE.DoubleSide })
     this.ennemy = new THREE.Mesh(geometry, material)
     this.ennemy.name = ENNEMY.NAME
-    this.ennemy.position.set(-this.getRandomPositionX(), -this.camera.getFilmHeight() / 4, 0)
-    this.scene.add(this.ennemy)
+    this.ennemy.position.set(-this.getRandomPositionX(), -World.camera.getFilmHeight() / 4, 0)
+    World.scene.add(this.ennemy)
   }
 
   getRandomPositionX() {
@@ -42,8 +41,8 @@ export default class Ennemy {
 
   isPlayerKilled() {
     if (this.ennemy.position.z > this.minPositionZ && this.ennemy.position.z < this.maxPositionZ) {
-      const min = this.ennemy.position.x - this.camera.getFilmWidth() / 8
-      const max = this.ennemy.position.x + this.camera.getFilmWidth() / 8
+      const min = this.ennemy.position.x - World.camera.getFilmWidth() / 8
+      const max = this.ennemy.position.x + World.camera.getFilmWidth() / 8
       if (this.player.position.x <= max && this.player.position.x >= min) {
         return true
       }
@@ -60,7 +59,7 @@ export default class Ennemy {
 
     if (this.ennemy.position.z > CAMERA.POSITION_Z) {
       if (isNewLevel) {
-        this.scene.remove(this.ennemy)
+        World.scene.remove(this.ennemy)
         return GAME.DELETE_ENNEMY
       } else {
         this.reset()
