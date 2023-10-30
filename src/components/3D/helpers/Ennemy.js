@@ -4,7 +4,7 @@ import World from './World'
 
 export default class Ennemy {
   constructor() {
-    this.maxPositionX = World.camera.getFilmWidth() / 4
+    this.maxPositionX = World.camera.getFilmWidth() / 2
     this.minPositionX = -this.maxPositionX
     this.maxPositionZ = PLAYER.POSITION_Z + PLAYER.SIZE / 2
     this.minPositionZ = PLAYER.POSITION_Z - PLAYER.SIZE / 2
@@ -19,12 +19,16 @@ export default class Ennemy {
   init() {
     const geometry = new THREE.PlaneGeometry(
       World.camera.getFilmWidth() / 4,
-      World.camera.getFilmHeight() / 4
+      World.camera.getFilmHeight() / 2
     )
     const material = new THREE.MeshBasicMaterial({ color: COLOR.PINK, side: THREE.DoubleSide })
     this.ennemy = new THREE.Mesh(geometry, material)
     this.ennemy.name = ENNEMY.NAME
-    this.ennemy.position.set(-this.getRandomPositionX(), -World.camera.getFilmHeight() / 4, 0)
+    this.ennemy.position.set(
+      -this.getRandomPositionX(),
+      -World.camera.getFilmHeight() / 2 + World.camera.getFilmWidth() / 16,
+      0
+    )
     World.scene.add(this.ennemy)
   }
 
@@ -44,6 +48,7 @@ export default class Ennemy {
       const min = this.ennemy.position.x - World.camera.getFilmWidth() / 8
       const max = this.ennemy.position.x + World.camera.getFilmWidth() / 8
       if (this.player.position.x <= max && this.player.position.x >= min) {
+        this.ennemy.position.z = PLAYER.POSITION_Z
         return true
       }
     }
