@@ -4,6 +4,9 @@
     <div class="bar">
       <div ref="percentage" class="percentage"></div>
     </div>
+    <div ref="menu" class="menu">
+      <div class="start" @click="startGame">Press SPACE to start</div>
+    </div>
   </div>
 </template>
 
@@ -19,9 +22,10 @@ import { GAME } from '../../utils/constant'
 let game = ref(null)
 let levelHTML = ref(null)
 let percentage = ref(null)
+let menu = ref(null)
 
 onMounted(() => {
-  const world = new World(levelHTML.value, percentage.value)
+  const world = new World(levelHTML.value, percentage.value, menu.value)
   world.attachTo(game.value)
 
   const keyboard = new Keyboard()
@@ -41,8 +45,8 @@ onMounted(() => {
       if (keyboard.getNewGame()) {
         keyboard.restart()
         player.restart()
-        ennemies.restart()
         world.restart()
+        ennemies.restart()
       }
     }
   }
@@ -88,5 +92,24 @@ onMounted(() => {
   height: 20px;
   background-color: white;
   transition: 0.05s all ease;
+}
+.menu {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000000a1;
+  backdrop-filter: blur(10px);
+}
+.start {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 20px;
+  font-weight: 900;
+}
+.hidden {
+  display: none;
 }
 </style>

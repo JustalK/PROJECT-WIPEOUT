@@ -5,7 +5,7 @@ import { CAMERA, GAME, HTML } from '../../../utils/constant'
 export default class World {
   static scene = null
   static camera = null
-  constructor(levelHTML, percentage) {
+  constructor(levelHTML, percentage, menu) {
     World.scene = new THREE.Scene()
     World.camera = new THREE.PerspectiveCamera(
       CAMERA.FOV,
@@ -23,11 +23,12 @@ export default class World {
     this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
 
     this.clock = new THREE.Clock()
-    this.status = GAME.START
+    this.status = GAME.STOP
     this.startTime = this.clock.getElapsedTime()
     this.isReadyNewLevel = false
     this.level = 1
     this.levelHTML = levelHTML
+    this.menu = menu
     this.percentage = percentage
     this.setLevel(this.level)
   }
@@ -66,9 +67,12 @@ export default class World {
   }
 
   restart() {
+    this.menu.classList.add('hidden')
     this.status = GAME.START
-    this.level = 0
+    this.level = 1
     this.startTime = this.clock.getElapsedTime()
+    this.setLevel(this.level)
+    this.setPercentage()
     this.isReadyNewLevel = false
   }
 
