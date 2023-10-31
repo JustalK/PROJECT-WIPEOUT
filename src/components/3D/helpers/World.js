@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Ennemies from './Ennemies'
-import { CAMERA, GAME, HTML, COLOR } from '../../../utils/constant'
+import { CAMERA, GAME, HTML, COLOR, ENNEMY } from '../../../utils/constant'
 
 export default class World {
   static scene = null
@@ -31,15 +31,19 @@ export default class World {
     this.menu = menu
     this.percentage = percentage
     this.setLevel(this.level)
+    this.floor = []
   }
 
-  tick() {
+  tick(delta) {
     this.setPercentage()
     if (this.clock.getElapsedTime() - this.startTime >= GAME.LEVEL_SPEED * this.level) {
       this.isReadyNewLevel = true
       if (this.level && Ennemies.getNumberEnnemies() === 0) {
         this.increaseLevel()
       }
+    }
+    for (const line of this.floor) {
+      line.position.z += ENNEMY.SPEED * delta
     }
   }
 
@@ -55,7 +59,7 @@ export default class World {
     })
 
     for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 100; j++) {
+      for (let j = 0; j < 1000; j++) {
         const line = new THREE.Mesh(geometry, material)
         line.position.set(
           -World.camera.getFilmWidth() / 2 + ((i * 2 + 1) * World.camera.getFilmWidth()) / 8,
@@ -64,6 +68,7 @@ export default class World {
         )
         line.rotation.x = -Math.PI / 2
         World.scene.add(line)
+        this.floor.push(line)
       }
     }
 

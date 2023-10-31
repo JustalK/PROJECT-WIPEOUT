@@ -41,7 +41,7 @@ onMounted(() => {
     if (world.getStatus() !== GAME.STOP) {
       player.tick(delta)
       ennemies.tick(delta)
-      world.tick()
+      world.tick(delta)
     } else {
       if (keyboard.getNewGame()) {
         keyboard.restart()

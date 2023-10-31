@@ -38,16 +38,20 @@ export default class Player {
 
     switch (this.keyboard.getDirection()) {
       case KEYBOARD_KEY.LEFT:
-        if (cube.position.x > -this.halfWidth + this.halfSizePlayer) {
+        if (cube.position.x - newVelocity > -this.halfWidth + this.halfSizePlayer) {
           cube.position.x -= newVelocity
+        } else {
+          cube.position.x = -this.halfWidth + this.halfSizePlayer
         }
         break
       case KEYBOARD_KEY.UP:
         cube.position.z -= newVelocity
         break
       case KEYBOARD_KEY.RIGHT:
-        if (cube.position.x < this.halfWidth - this.halfSizePlayer) {
+        if (cube.position.x + newVelocity < this.halfWidth - this.halfSizePlayer) {
           cube.position.x += newVelocity
+        } else {
+          cube.position.x = this.halfWidth - this.halfSizePlayer
         }
         break
       case KEYBOARD_KEY.DOWN:
