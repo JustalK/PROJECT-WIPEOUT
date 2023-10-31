@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Ennemies from './Ennemies'
-import { CAMERA, GAME, HTML } from '../../../utils/constant'
+import { CAMERA, GAME, HTML, COLOR } from '../../../utils/constant'
 
 export default class World {
   static scene = null
@@ -41,6 +41,44 @@ export default class World {
         this.increaseLevel()
       }
     }
+  }
+
+  init() {
+    const geometry = new THREE.PlaneGeometry(
+      World.camera.getFilmWidth() / 4,
+      World.camera.getFilmHeight() / 4
+    )
+    const material = new THREE.MeshBasicMaterial({
+      color: COLOR.WHITE,
+      side: THREE.DoubleSide,
+      wireframe: true
+    })
+
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 100; j++) {
+        const line = new THREE.Mesh(geometry, material)
+        line.position.set(
+          -World.camera.getFilmWidth() / 2 + ((i * 2 + 1) * World.camera.getFilmWidth()) / 8,
+          -World.camera.getFilmHeight() / 2 + 0.05,
+          490 - (j * World.camera.getFilmHeight()) / 4
+        )
+        line.rotation.x = -Math.PI / 2
+        World.scene.add(line)
+      }
+    }
+
+    const geometry2 = new THREE.PlaneGeometry(
+      World.camera.getFilmWidth(),
+      World.camera.getFilmHeight() * 500
+    )
+    const material2 = new THREE.MeshBasicMaterial({
+      color: COLOR.DARK_BLUE,
+      side: THREE.DoubleSide
+    })
+    const floor = new THREE.Mesh(geometry2, material2)
+    floor.position.set(0, -World.camera.getFilmHeight() / 2, 0)
+    floor.rotation.x = -Math.PI / 2
+    World.scene.add(floor)
   }
 
   increaseLevel() {

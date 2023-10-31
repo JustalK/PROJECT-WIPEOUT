@@ -27,6 +27,7 @@ let menu = ref(null)
 onMounted(() => {
   const world = new World(levelHTML.value, percentage.value, menu.value)
   world.attachTo(game.value)
+  world.init()
 
   const keyboard = new Keyboard()
   keyboard.init()
@@ -58,8 +59,8 @@ onMounted(() => {
   }
 
   const lines = new Lines()
-  lines.addLinePlayerMovement()
-  lines.addLinePlayerArea()
+  //lines.addLinePlayerMovement()
+  //lines.addLinePlayerArea()
 
   animate()
 })
