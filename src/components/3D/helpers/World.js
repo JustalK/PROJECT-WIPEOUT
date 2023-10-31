@@ -7,6 +7,7 @@ export default class World {
   static camera = null
   constructor(levelHTML, percentage, menu) {
     World.scene = new THREE.Scene()
+    World.scene.background = new THREE.Color(COLOR.WHITE)
     World.camera = new THREE.PerspectiveCamera(
       CAMERA.FOV,
       window.innerWidth / window.innerHeight,
@@ -44,6 +45,9 @@ export default class World {
     }
     for (const line of this.floor) {
       line.position.z += ENNEMY.SPEED * delta
+      if (line.position.z > 500) {
+        line.position.z = 0
+      }
     }
   }
 
@@ -53,13 +57,13 @@ export default class World {
       World.camera.getFilmHeight() / 4
     )
     const material = new THREE.MeshBasicMaterial({
-      color: COLOR.WHITE,
+      color: COLOR.DARK_BLUE,
       side: THREE.DoubleSide,
       wireframe: true
     })
 
     for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 1000; j++) {
+      for (let j = 0; j < 120; j++) {
         const line = new THREE.Mesh(geometry, material)
         line.position.set(
           -World.camera.getFilmWidth() / 2 + ((i * 2 + 1) * World.camera.getFilmWidth()) / 8,
@@ -77,7 +81,7 @@ export default class World {
       World.camera.getFilmHeight() * 500
     )
     const material2 = new THREE.MeshBasicMaterial({
-      color: COLOR.DARK_BLUE,
+      color: COLOR.WHITE,
       side: THREE.DoubleSide
     })
     const floor = new THREE.Mesh(geometry2, material2)

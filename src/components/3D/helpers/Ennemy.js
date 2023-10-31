@@ -21,12 +21,12 @@ export default class Ennemy {
       World.camera.getFilmWidth() / 4,
       World.camera.getFilmHeight() / 2
     )
-    const material = new THREE.MeshBasicMaterial({ color: COLOR.PINK, side: THREE.DoubleSide })
+    const material = new THREE.MeshBasicMaterial({ color: COLOR.BLACK, side: THREE.DoubleSide })
     this.ennemy = new THREE.Mesh(geometry, material)
     this.ennemy.name = ENNEMY.NAME
     this.ennemy.position.set(
       -this.getRandomPositionX(),
-      -World.camera.getFilmHeight() / 2 + World.camera.getFilmWidth() / 16,
+      -World.camera.getFilmHeight() / 2 + World.camera.getFilmWidth() / 8,
       0
     )
     World.scene.add(this.ennemy)
