@@ -27,7 +27,7 @@ export const ENNEMY = {
 export const CAMERA = {
   FOV: 75,
   POSITION_X: 0,
-  POSITION_Y: 0,
+  POSITION_Y: 1,
   POSITION_Z: 500,
   TARGET_POSITION_X: 0,
   TARGET_POSITION_Y: 0,
@@ -47,5 +47,7 @@ export const COLOR = {
   RED: 0xff0000,
   GREEN: 0x00ff00,
   BLUE: 0x0000ff,
-  PINK: 0xff00ff
+  PINK: 0xff00ff,
+  DARK_BLUE: 0x1424c2,
+  BLACK: 0x000000
 }

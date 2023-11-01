@@ -1,12 +1,13 @@
 import * as THREE from 'three'
 import Ennemies from './Ennemies'
-import { CAMERA, GAME, HTML } from '../../../utils/constant'
+import { CAMERA, GAME, HTML, COLOR, ENNEMY } from '../../../utils/constant'
 
 export default class World {
   static scene = null
   static camera = null
-  constructor(levelHTML, percentage) {
+  constructor(levelHTML, percentage, menu) {
     World.scene = new THREE.Scene()
+    World.scene.background = new THREE.Color(COLOR.WHITE)
     World.camera = new THREE.PerspectiveCamera(
       CAMERA.FOV,
       window.innerWidth / window.innerHeight,
@@ -23,16 +24,18 @@ export default class World {
     this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
 
     this.clock = new THREE.Clock()
-    this.status = GAME.START
+    this.status = GAME.STOP
     this.startTime = this.clock.getElapsedTime()
     this.isReadyNewLevel = false
     this.level = 1
     this.levelHTML = levelHTML
+    this.menu = menu
     this.percentage = percentage
     this.setLevel(this.level)
+    this.floor = []
   }
 
-  tick() {
+  tick(delta) {
     this.setPercentage()
     if (this.clock.getElapsedTime() - this.startTime >= GAME.LEVEL_SPEED * this.level) {
       this.isReadyNewLevel = true
@@ -40,6 +43,51 @@ export default class World {
         this.increaseLevel()
       }
     }
+    for (const line of this.floor) {
+      line.position.z += ENNEMY.SPEED * delta
+      if (line.position.z > 500) {
+        line.position.z = 0
+      }
+    }
+  }
+
+  init() {
+    const geometry = new THREE.PlaneGeometry(
+      World.camera.getFilmWidth() / 4,
+      World.camera.getFilmHeight() / 4
+    )
+    const material = new THREE.MeshBasicMaterial({
+      color: COLOR.DARK_BLUE,
+      side: THREE.DoubleSide,
+      wireframe: true
+    })
+
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 120; j++) {
+        const line = new THREE.Mesh(geometry, material)
+        line.position.set(
+          -World.camera.getFilmWidth() / 2 + ((i * 2 + 1) * World.camera.getFilmWidth()) / 8,
+          -World.camera.getFilmHeight() / 2 + 0.05,
+          490 - (j * World.camera.getFilmHeight()) / 4
+        )
+        line.rotation.x = -Math.PI / 2
+        World.scene.add(line)
+        this.floor.push(line)
+      }
+    }
+
+    const geometry2 = new THREE.PlaneGeometry(
+      World.camera.getFilmWidth(),
+      World.camera.getFilmHeight() * 500
+    )
+    const material2 = new THREE.MeshBasicMaterial({
+      color: COLOR.WHITE,
+      side: THREE.DoubleSide
+    })
+    const floor = new THREE.Mesh(geometry2, material2)
+    floor.position.set(0, -World.camera.getFilmHeight() / 2, 0)
+    floor.rotation.x = -Math.PI / 2
+    World.scene.add(floor)
   }
 
   increaseLevel() {
@@ -66,9 +114,12 @@ export default class World {
   }
 
   restart() {
+    this.menu.classList.add('hidden')
     this.status = GAME.START
-    this.level = 0
+    this.level = 1
     this.startTime = this.clock.getElapsedTime()
+    this.setLevel(this.level)
+    this.setPercentage()
     this.isReadyNewLevel = false
   }
 

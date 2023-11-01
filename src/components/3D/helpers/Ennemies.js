@@ -23,6 +23,8 @@ export default class Ennemies {
       e.restart()
     }
     Ennemies.ennemies = []
+    this.numberEnnemies = 1
+    this.currentLevel = this.world.getLevel()
   }
 
   tick(delta) {
