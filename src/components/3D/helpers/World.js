@@ -46,7 +46,7 @@ export default class World {
     for (const line of this.floor) {
       line.position.z += ENNEMY.SPEED * delta
       if (line.position.z > 500) {
-        line.position.z = 0
+        line.position.z = line.position.z - 500
       }
     }
   }
@@ -63,7 +63,7 @@ export default class World {
     })
 
     for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 120; j++) {
+      for (let j = 0; j < 113; j++) {
         const line = new THREE.Mesh(geometry, material)
         line.position.set(
           -World.camera.getFilmWidth() / 2 + ((i * 2 + 1) * World.camera.getFilmWidth()) / 8,
