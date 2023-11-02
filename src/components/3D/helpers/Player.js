@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { PLAYER, COLOR, KEYBOARD_KEY } from '../../../utils/constant'
 import World from './World'
-
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 export default class Player {
   constructor(keyboard) {
     this.keyboard = keyboard
@@ -13,6 +13,22 @@ export default class Player {
   }
 
   init() {
+    const loader = new GLTFLoader()
+
+    loader.load(
+      'spaceship.glb',
+      function (gltf) {
+        const spaceship = gltf.scene
+        spaceship.position.set(0, 0, 498)
+        spaceship.scale.set(0.1, 0.1, 0.1)
+        World.scene.add(spaceship)
+      },
+      undefined,
+      function (error) {
+        console.error(error)
+      }
+    )
+
     const geometry = new THREE.BoxGeometry(PLAYER.SIZE, PLAYER.SIZE, PLAYER.SIZE)
     const material = new THREE.MeshBasicMaterial({ color: COLOR.GREEN })
     const cube = new THREE.Mesh(geometry, material)

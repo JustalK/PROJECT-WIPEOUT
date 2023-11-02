@@ -46,7 +46,7 @@ export default class World {
     for (const line of this.floor) {
       line.position.z += ENNEMY.SPEED * delta
       if (line.position.z > 500) {
-        line.position.z = 0
+        line.position.z = line.position.z - 500
       }
     }
   }
@@ -63,7 +63,7 @@ export default class World {
     })
 
     for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 120; j++) {
+      for (let j = 0; j < 113; j++) {
         const line = new THREE.Mesh(geometry, material)
         line.position.set(
           -World.camera.getFilmWidth() / 2 + ((i * 2 + 1) * World.camera.getFilmWidth()) / 8,
@@ -75,19 +75,6 @@ export default class World {
         this.floor.push(line)
       }
     }
-
-    const geometry2 = new THREE.PlaneGeometry(
-      World.camera.getFilmWidth(),
-      World.camera.getFilmHeight() * 500
-    )
-    const material2 = new THREE.MeshBasicMaterial({
-      color: COLOR.WHITE,
-      side: THREE.DoubleSide
-    })
-    const floor = new THREE.Mesh(geometry2, material2)
-    floor.position.set(0, -World.camera.getFilmHeight() / 2, 0)
-    floor.rotation.x = -Math.PI / 2
-    World.scene.add(floor)
   }
 
   increaseLevel() {
