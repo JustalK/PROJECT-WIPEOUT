@@ -96,6 +96,15 @@ export default class World {
     pilone.receiveShadow = true
     World.scene.add(pilone)
 
+    const pilone2 = new THREE.Mesh(
+      new THREE.BoxGeometry(20, 100, 10),
+      new THREE.MeshPhongMaterial({ color: COLOR.GREY })
+    )
+    pilone2.position.set(-50, 0, 350)
+    pilone2.castShadow = true
+    pilone2.receiveShadow = true
+    World.scene.add(pilone2)
+
     const geometry = new THREE.PlaneGeometry(
       World.camera.getFilmWidth() * 500,
       World.camera.getFilmHeight() * 500
