@@ -12,6 +12,7 @@ export default class Player {
     this.halfHeight = World.camera.getFilmHeight() / 2
     this.halfWidth = World.camera.getFilmWidth() / 2
     this.halfSizePlayer = PLAYER.SIZE / 2
+    this.player = null
   }
 
   init() {
@@ -34,20 +35,25 @@ export default class Player {
     **/
     const geometry = new THREE.BoxGeometry(PLAYER.SIZE, PLAYER.SIZE, PLAYER.SIZE)
     const material = new THREE.MeshBasicMaterial({ color: COLOR.GREEN })
-    const cube = new THREE.Mesh(geometry, material)
-    cube.name = PLAYER.NAME
-    cube.position.set(PLAYER.POSITION_X, -this.halfHeight + this.halfSizePlayer, PLAYER.POSITION_Z)
-    World.scene.add(cube)
+    this.player = new THREE.Mesh(geometry, material)
+    this.player.name = PLAYER.NAME
+    this.player.position.set(
+      PLAYER.POSITION_X,
+      -this.halfHeight + this.halfSizePlayer,
+      PLAYER.POSITION_Z
+    )
+    World.scene.add(this.player)
   }
 
   restart() {
-    const cube = World.scene.getObjectByName(PLAYER.NAME)
-    cube.position.set(PLAYER.POSITION_X, -this.halfHeight + this.halfSizePlayer, PLAYER.POSITION_Z)
+    this.player.position.set(
+      PLAYER.POSITION_X,
+      -this.halfHeight + this.halfSizePlayer,
+      PLAYER.POSITION_Z
+    )
   }
 
   tick(delta) {
-    const cube = World.scene.getObjectByName(PLAYER.NAME)
-
     let newVelocity = this.velocity
     if (this.velocity == 0 || this.previousDirection !== this.keyboard.getDirection()) {
       newVelocity = PLAYER.IMPULSE
@@ -57,44 +63,47 @@ export default class Player {
 
     switch (this.keyboard.getDirection()) {
       case KEYBOARD_KEY.LEFT:
-        if (cube.position.x - newVelocity > -this.halfWidth + this.halfSizePlayer) {
-          cube.position.x -= newVelocity
+        if (this.player.position.x - newVelocity > -this.halfWidth + this.halfSizePlayer) {
+          this.player.position.x -= newVelocity
         } else {
-          cube.position.x = -this.halfWidth + this.halfSizePlayer
+          this.player.position.x = -this.halfWidth + this.halfSizePlayer
         }
         if (
-          cube.rotation.z < Math.PI / 6 &&
-          Math.abs(this.previousPositionX - cube.position.x) !== 0
+          this.player.rotation.z < Math.PI / 6 &&
+          Math.abs(this.previousPositionX - this.player.position.x) !== 0
         ) {
-          cube.rotation.z = Math.min(Math.PI / 6, cube.rotation.z + 0.1)
+          this.player.rotation.z = Math.min(Math.PI / 6, this.player.rotation.z + 0.1)
         }
         break
       case KEYBOARD_KEY.RIGHT:
-        if (cube.position.x + newVelocity < this.halfWidth - this.halfSizePlayer) {
-          cube.position.x += newVelocity
+        if (this.player.position.x + newVelocity < this.halfWidth - this.halfSizePlayer) {
+          this.player.position.x += newVelocity
         } else {
-          cube.position.x = this.halfWidth - this.halfSizePlayer
+          this.player.position.x = this.halfWidth - this.halfSizePlayer
         }
         if (
-          cube.rotation.z > -Math.PI / 6 &&
-          Math.abs(this.previousPositionX - cube.position.x) !== 0
+          this.player.rotation.z > -Math.PI / 6 &&
+          Math.abs(this.previousPositionX - this.player.position.x) !== 0
         ) {
-          cube.rotation.z = Math.max(-Math.PI / 6, cube.rotation.z - 0.1)
+          this.player.rotation.z = Math.max(-Math.PI / 6, this.player.rotation.z - 0.1)
         }
         break
       default:
         this.velocity = 0
     }
 
-    if (Math.abs(this.previousPositionX - cube.position.x) === 0 && cube.rotation.z !== 0) {
-      if (cube.rotation.z < 0) {
-        cube.rotation.z = Math.max(0, cube.rotation.z + 0.1)
+    if (
+      Math.abs(this.previousPositionX - this.player.position.x) === 0 &&
+      this.player.rotation.z !== 0
+    ) {
+      if (this.player.rotation.z < 0) {
+        this.player.rotation.z = Math.max(0, this.player.rotation.z + 0.1)
       } else {
-        cube.rotation.z = Math.min(0, cube.rotation.z - 0.1)
+        this.player.rotation.z = Math.min(0, this.player.rotation.z - 0.1)
       }
     }
 
-    this.previousPositionX = cube.position.x
+    this.previousPositionX = this.player.position.x
     this.previousDirection = this.keyboard.getDirection()
   }
 }
