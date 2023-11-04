@@ -6,6 +6,8 @@ export default class Player {
   constructor(keyboard) {
     this.keyboard = keyboard
     this.previousDirection = null
+    this.previousPositionX = 0
+    this.rotation = 0
     this.velocity = 0
     this.halfHeight = World.camera.getFilmHeight() / 2
     this.halfWidth = World.camera.getFilmWidth() / 2
@@ -13,6 +15,7 @@ export default class Player {
   }
 
   init() {
+    /**
     const loader = new GLTFLoader()
 
     loader.load(
@@ -28,7 +31,7 @@ export default class Player {
         console.error(error)
       }
     )
-
+    **/
     const geometry = new THREE.BoxGeometry(PLAYER.SIZE, PLAYER.SIZE, PLAYER.SIZE)
     const material = new THREE.MeshBasicMaterial({ color: COLOR.GREEN })
     const cube = new THREE.Mesh(geometry, material)
@@ -59,9 +62,12 @@ export default class Player {
         } else {
           cube.position.x = -this.halfWidth + this.halfSizePlayer
         }
-        break
-      case KEYBOARD_KEY.UP:
-        cube.position.z -= newVelocity
+        if (
+          cube.rotation.z < Math.PI / 6 &&
+          Math.abs(this.previousPositionX - cube.position.x) !== 0
+        ) {
+          cube.rotation.z = Math.min(Math.PI / 6, cube.rotation.z + 0.1)
+        }
         break
       case KEYBOARD_KEY.RIGHT:
         if (cube.position.x + newVelocity < this.halfWidth - this.halfSizePlayer) {
@@ -69,14 +75,26 @@ export default class Player {
         } else {
           cube.position.x = this.halfWidth - this.halfSizePlayer
         }
-        break
-      case KEYBOARD_KEY.DOWN:
-        cube.position.z += newVelocity
+        if (
+          cube.rotation.z > -Math.PI / 6 &&
+          Math.abs(this.previousPositionX - cube.position.x) !== 0
+        ) {
+          cube.rotation.z = Math.max(-Math.PI / 6, cube.rotation.z - 0.1)
+        }
         break
       default:
         this.velocity = 0
     }
 
+    if (Math.abs(this.previousPositionX - cube.position.x) === 0 && cube.rotation.z !== 0) {
+      if (cube.rotation.z < 0) {
+        cube.rotation.z = Math.max(0, cube.rotation.z + 0.1)
+      } else {
+        cube.rotation.z = Math.min(0, cube.rotation.z - 0.1)
+      }
+    }
+
+    this.previousPositionX = cube.position.x
     this.previousDirection = this.keyboard.getDirection()
   }
 }
