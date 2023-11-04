@@ -56,6 +56,9 @@ export default class World {
   }
 
   init() {
+    const light = new THREE.AmbientLight(0x404040) // soft white light
+    World.scene.add(light)
+
     const directionalLight = new THREE.DirectionalLight(0xffffff, 3)
     directionalLight.position.set(0, 50, 200)
     directionalLight.castShadow = true
@@ -77,12 +80,16 @@ export default class World {
     directionalLight.target = targetObject
     World.scene.add(directionalLight)
 
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5)
+    directionalLight2.position.set(0, 50, 800)
+    World.scene.add(directionalLight2)
+
     const helper = new THREE.CameraHelper(directionalLight.shadow.camera)
     World.scene.add(helper)
 
     const pilone = new THREE.Mesh(
-      new THREE.BoxGeometry(100, 100, 100),
-      new THREE.MeshLambertMaterial({ color: COLOR.RED })
+      new THREE.BoxGeometry(20, 100, 10),
+      new THREE.MeshPhongMaterial({ color: COLOR.GREY })
     )
     pilone.position.set(-70, 30, 420)
     pilone.castShadow = true
@@ -94,7 +101,7 @@ export default class World {
       World.camera.getFilmHeight() * 500
     )
     const material = new THREE.MeshPhysicalMaterial({
-      color: COLOR.GREEN
+      color: COLOR.GREY
     })
 
     const line = new THREE.Mesh(geometry, material)
