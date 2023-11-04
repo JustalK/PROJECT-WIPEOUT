@@ -27,7 +27,7 @@ export const ENNEMY = {
 export const CAMERA = {
   FOV: 75,
   POSITION_X: 0,
-  POSITION_Y: 1,
+  POSITION_Y: 10,
   POSITION_Z: 500,
   TARGET_POSITION_X: 0,
   TARGET_POSITION_Y: 0,

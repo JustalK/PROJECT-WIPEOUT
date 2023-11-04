@@ -39,9 +39,9 @@ onMounted(() => {
 
   function update(delta) {
     if (world.getStatus() !== GAME.STOP) {
-      player.tick(delta)
-      ennemies.tick(delta)
-      world.tick(delta)
+      //player.tick(delta)
+      //ennemies.tick(delta)
+      //world.tick(delta)
     } else {
       if (keyboard.getNewGame()) {
         keyboard.restart()

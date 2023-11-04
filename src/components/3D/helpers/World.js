@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Ennemies from './Ennemies'
 import { CAMERA, GAME, HTML, COLOR, ENNEMY } from '../../../utils/constant'
 
@@ -20,8 +21,11 @@ export default class World {
       CAMERA.TARGET_POSITION_Y,
       CAMERA.TARGET_POSITION_Z
     )
-    this.renderer = new THREE.WebGLRenderer()
+    this.renderer = new THREE.WebGLRenderer({ antialias: true })
     this.renderer.setSize(window.innerWidth / 2, window.innerHeight / 2)
+    this.renderer.shadowMap.enabled = true
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    new OrbitControls(World.camera, this.renderer.domElement)
 
     this.clock = new THREE.Clock()
     this.status = GAME.STOP
@@ -52,29 +56,58 @@ export default class World {
   }
 
   init() {
-    const geometry = new THREE.PlaneGeometry(
-      World.camera.getFilmWidth() / 4,
-      World.camera.getFilmHeight() / 4
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 3)
+    directionalLight.position.set(0, 50, 200)
+    directionalLight.castShadow = true
+    directionalLight.shadow.camera.top = 200
+    directionalLight.shadow.camera.bottom = -200
+    directionalLight.shadow.camera.left = -200
+    directionalLight.shadow.camera.right = 200
+    directionalLight.shadow.camera.near = 120
+    directionalLight.shadow.camera.far = 400
+    directionalLight.shadow.bias = 0.0001
+
+    directionalLight.shadow.mapSize.width = window.innerWidth
+    directionalLight.shadow.mapSize.height = window.innerHeight
+
+    const targetObject = new THREE.Object3D()
+    targetObject.position.set(0, 0, 480)
+    World.scene.add(targetObject)
+
+    directionalLight.target = targetObject
+    World.scene.add(directionalLight)
+
+    const helper = new THREE.CameraHelper(directionalLight.shadow.camera)
+    World.scene.add(helper)
+
+    const pilone = new THREE.Mesh(
+      new THREE.BoxGeometry(100, 100, 100),
+      new THREE.MeshLambertMaterial({ color: COLOR.RED })
     )
-    const material = new THREE.MeshBasicMaterial({
-      color: COLOR.DARK_BLUE,
-      side: THREE.DoubleSide,
-      wireframe: true
+    pilone.position.set(-70, 30, 420)
+    pilone.castShadow = true
+    pilone.receiveShadow = true
+    World.scene.add(pilone)
+
+    const geometry = new THREE.PlaneGeometry(
+      World.camera.getFilmWidth() * 500,
+      World.camera.getFilmHeight() * 500
+    )
+    const material = new THREE.MeshPhysicalMaterial({
+      color: COLOR.GREEN
     })
 
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 113; j++) {
-        const line = new THREE.Mesh(geometry, material)
-        line.position.set(
-          -World.camera.getFilmWidth() / 2 + ((i * 2 + 1) * World.camera.getFilmWidth()) / 8,
-          -World.camera.getFilmHeight() / 2 + 0.05,
-          490 - (j * World.camera.getFilmHeight()) / 4
-        )
-        line.rotation.x = -Math.PI / 2
-        World.scene.add(line)
-        this.floor.push(line)
-      }
-    }
+    const line = new THREE.Mesh(geometry, material)
+    line.position.set(
+      -World.camera.getFilmWidth() / 2 + World.camera.getFilmWidth() / 2,
+      -World.camera.getFilmHeight() / 2 + 0.05,
+      480
+    )
+    line.rotation.x = -Math.PI / 2
+    line.castShadow = false
+    line.receiveShadow = true
+    World.scene.add(line)
+    this.floor.push(line)
   }
 
   increaseLevel() {
