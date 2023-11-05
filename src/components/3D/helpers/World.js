@@ -37,6 +37,7 @@ export default class World {
     this.percentage = percentage
     this.setLevel(this.level)
     this.floor = []
+    this.pilons = []
   }
 
   tick(delta) {
@@ -47,10 +48,16 @@ export default class World {
         this.increaseLevel()
       }
     }
-    for (const line of this.floor) {
-      line.position.z += ENNEMY.SPEED * delta
-      if (line.position.z > 500) {
-        line.position.z = line.position.z - 500
+    for (const pilon of this.pilons) {
+      if (pilon.position.y < 0) {
+        pilon.position.y += 10
+      } else {
+        pilon.position.y = 0
+        pilon.position.z += ENNEMY.SPEED * delta
+      }
+      if (pilon.position.z > 500) {
+        pilon.position.z = pilon.position.z - 500
+        pilon.position.y = -pilon.positionFinalY
       }
     }
   }
@@ -60,14 +67,14 @@ export default class World {
     World.scene.add(light)
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 3)
-    directionalLight.position.set(0, 50, 200)
+    directionalLight.position.set(0, 50, 0)
     directionalLight.castShadow = true
-    directionalLight.shadow.camera.top = 200
+    directionalLight.shadow.camera.top = 1000
     directionalLight.shadow.camera.bottom = -200
-    directionalLight.shadow.camera.left = -200
-    directionalLight.shadow.camera.right = 200
-    directionalLight.shadow.camera.near = 120
-    directionalLight.shadow.camera.far = 400
+    directionalLight.shadow.camera.left = -1300
+    directionalLight.shadow.camera.right = 1300
+    directionalLight.shadow.camera.near = 0
+    directionalLight.shadow.camera.far = 500
     directionalLight.shadow.bias = 0.0001
 
     directionalLight.shadow.mapSize.width = window.innerWidth
@@ -87,23 +94,19 @@ export default class World {
     const helper = new THREE.CameraHelper(directionalLight.shadow.camera)
     World.scene.add(helper)
 
-    const pilone = new THREE.Mesh(
-      new THREE.BoxGeometry(20, 100, 10),
-      new THREE.MeshPhongMaterial({ color: COLOR.GREY })
-    )
-    pilone.position.set(-70, 30, 420)
-    pilone.castShadow = true
-    pilone.receiveShadow = true
-    World.scene.add(pilone)
-
-    const pilone2 = new THREE.Mesh(
-      new THREE.BoxGeometry(20, 100, 10),
-      new THREE.MeshPhongMaterial({ color: COLOR.GREY })
-    )
-    pilone2.position.set(-50, 0, 350)
-    pilone2.castShadow = true
-    pilone2.receiveShadow = true
-    World.scene.add(pilone2)
+    for (let i = 0; i < 50; i++) {
+      const positionY = this.getRandomNumber(100, 1000)
+      const pilon = new THREE.Mesh(
+        new THREE.BoxGeometry(20, positionY, 10),
+        new THREE.MeshPhongMaterial({ color: COLOR.GREY })
+      )
+      pilon.position.set(this.getRandomPositionX(), 0, this.getRandomNumber(0, 500))
+      pilon.castShadow = true
+      pilon.receiveShadow = true
+      pilon.positionFinalY = positionY
+      World.scene.add(pilon)
+      this.pilons.push(pilon)
+    }
 
     const geometry = new THREE.PlaneGeometry(
       World.camera.getFilmWidth() * 500,
@@ -123,7 +126,20 @@ export default class World {
     line.castShadow = false
     line.receiveShadow = true
     World.scene.add(line)
-    this.floor.push(line)
+  }
+
+  getRandomPositionX() {
+    let randomNmber = this.getRandomNumber(700, -700)
+    if (randomNmber >= -30 && randomNmber <= 30) {
+      const randomNumberLower = randomNmber - 30
+      const randomNumberUpper = randomNmber + 30
+      randomNmber = randomNumberLower < -30 ? randomNumberLower : randomNumberUpper
+    }
+    return randomNmber
+  }
+
+  getRandomNumber(max, min) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 
   increaseLevel() {
